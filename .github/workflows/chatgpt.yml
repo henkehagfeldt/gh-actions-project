@@ -27,15 +27,14 @@ jobs:
         PYTHON_FILE=$(cat ${{ github.workspace }}/stupid_python.py | jq -Rs .)
 
         echo "$PYTHON_FILE"
+
+        JSON_PAYLOAD=$(echo "{\"model\": \"gpt-3.5-turbo-16k\", \"messages\": [{\"role\": \"user\", \"content\": \"Please help me debug this Python code: $PYTHON_FILE\"}]}" | jq .)
+
+        echo "$JSON_PAYLOAD"
         
         RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
-        -d "{
-            \"model\": \"gpt-3.5-turbo-16k\",
-            \"messages\": [
-                {\"role\": \"user\", \"content\": \"Please help me debug this Python code: $PYTHON_FILE\"}
-            ]
-        }")
+        -d "$JSON_PAYLOAD")
         
         echo "Response: $RESPONSE"
