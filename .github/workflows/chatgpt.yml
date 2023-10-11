@@ -10,7 +10,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
-  get-secret:
+  elite-level-consulting:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment:
@@ -24,13 +24,13 @@ jobs:
     - name: Send message to ChatGPT
       run: |
         # Read the file content into a variable
-        PYTHON_FILE=$(<stupid_python.py)
+        # PYTHON_FILE=$(<stupid_python.py)
         
         RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/engines/ada/completions" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
         -d "{
-            \"prompt\": \"Can you please have a look at my python code, and help me debug it? $PYTHON_FILE\",
+            \"prompt\": \"Can you please have a look at my python code, and help me debug it?\",
             \"max_tokens\": 100
         }")
         
