@@ -27,7 +27,7 @@ jobs:
     - name: Send message to ChatGPT
       run: |
         # Read the file content into a variable
-        PYTHON_FILE=$(<$GITHUB_WORKSPACE/stupid_python.py | jq -Rs .)
+        PYTHON_FILE=$(<${{ github.workspace }}/stupid_python.py | jq -Rs .)
 
         # Construct the JSON payload
         JSON_PAYLOAD="{
