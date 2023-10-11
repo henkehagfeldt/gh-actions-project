@@ -20,21 +20,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Install jq
-      run: sudo apt-get install -y jq
       
     - name: Send message to ChatGPT
       run: |
         # Read the file content into a variable
         PYTHON_FILE=$(<${{ github.workspace }}/stupid_python.py | jq -Rs .)
 
-        # Construct the JSON payload
-        JSON_PAYLOAD="{
-            \"messages\": [
-                {\"role\": \"user\", \"content\": \"Please help me debug this Python code: $PYTHON_FILE\"}
-            ]
-        }"
+        echo "$PYTHON_FILE"
 
         # Echo the payload for debugging purposes
         echo "$JSON_PAYLOAD"
@@ -44,7 +36,9 @@ jobs:
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
         -d "{
             \"model\": \"gpt-3.5-turbo-16k\",
-            "$JSON_PAYLOAD"
+            \"messages\": [
+                {\"role\": \"user\", \"content\": \"Please help me debug this Python code: $PYTHON_FILE\"}
+            ]
         }")
         
         echo "Response: $RESPONSE"
