@@ -33,7 +33,7 @@ jobs:
             \"model\": \"gpt-3.5-turbo-16k\",
             \"messages\": [
                 {\"role\": \"system\", \"content\": \"You are a helpful assistant. Debug the following Python code.\"},
-                {\"role\": \"user\", \"content\": \"Can you please have a look at my python code and help me debug it?\"}
+                {\"role\": \"user\", \"content\": \"Can you please have a look at my python code and help me debug it? \n\n $PYTHON_FILE\"}
             ]
         }")
         
