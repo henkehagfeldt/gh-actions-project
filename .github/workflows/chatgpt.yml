@@ -24,12 +24,9 @@ jobs:
     - name: Send message to ChatGPT
       run: |
         # Read the file content into a variable
-        PYTHON_FILE=$(<${{ github.workspace }}/stupid_python.py | jq -Rs .)
+        PYTHON_FILE=$(cat ${{ github.workspace }}/stupid_python.py | jq -Rs .)
 
         echo "$PYTHON_FILE"
-
-        # Echo the payload for debugging purposes
-        echo "$JSON_PAYLOAD"
         
         RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
         -H "Content-Type: application/json" \
