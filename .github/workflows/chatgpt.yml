@@ -30,8 +30,10 @@ jobs:
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
         -d "{
-            \"prompt\": \"Can you please have a look at my python code, and help me debug it?\",
-            \"max_tokens\": 100
+            \"messages\": [
+                {\"role\": \"system\", \"content\": \"You are a helpful assistant. Debug the following Python code.\"},
+                {\"role\": \"user\", \"content\": \"Can you please have a look at my python code and help me debug it?\"}
+            ]
         }")
         
         echo "Response: $RESPONSE"
