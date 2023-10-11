@@ -29,9 +29,9 @@ jobs:
         RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/engines/ada/completions" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
-        -d '{
-          \"prompt\": Can you please have a look at my python code, and help me debug it? \"$PYTHON_FILE\",
-          \"max_tokens\": 100
-        }')
+        -d "{
+            \"prompt\": \"Can you please have a look at my python code, and help me debug it? $PYTHON_FILE\",
+            \"max_tokens\": 100
+        }")
         
         echo "Response: $RESPONSE"
