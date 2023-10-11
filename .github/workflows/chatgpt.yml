@@ -1,0 +1,37 @@
+# This is a basic workflow that is manually triggered
+
+name: Ask ChatGPT for help
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  get-secret:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment:
+      name: chatgpt
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Send message to ChatGPT
+      run: |
+        # Read the file content into a variable
+        PYTHON_FILE=$(<stupid_python.py)
+        
+        RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/engines/ada/completions" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
+        -d '{
+          \"prompt\": Can you please have a look at my python code, and help me debug it? \"$PYTHON_FILE\",
+          \"max_tokens\": 100
+        }')
+        
+        echo "Response: $RESPONSE"
