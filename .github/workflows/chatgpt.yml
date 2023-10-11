@@ -28,16 +28,23 @@ jobs:
       run: |
         # Read the file content into a variable
         PYTHON_FILE=$(<stupid_python.py | jq -Rs .)
+
+        # Construct the JSON payload
+        JSON_PAYLOAD="{
+            \"messages\": [
+                {\"role\": \"user\", \"content\": \"Please help me debug this Python code: $PYTHON_FILE\"}
+            ]
+        }"
+
+        # Echo the payload for debugging purposes
+        echo "$JSON_PAYLOAD"
         
         RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
         -d "{
             \"model\": \"gpt-3.5-turbo-16k\",
-            \"messages\": [
-                {\"role\": \"system\", \"content\": \"You are a helpful assistant. Debug the following Python code.\"},
-                {\"role\": \"user\", \"content\": \"Can you please have a look at my python code and help me debug it? \n\n $PYTHON_FILE\"}
-            ]
+            "$JSON_PAYLOAD"
         }")
         
         echo "Response: $RESPONSE"
