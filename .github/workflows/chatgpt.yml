@@ -26,7 +26,7 @@ jobs:
         # Read the file content into a variable
         # PYTHON_FILE=$(<stupid_python.py)
         
-        RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/engines/ada/completions" \
+        RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/engines/davinci-codex/completions" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
         -d "{
