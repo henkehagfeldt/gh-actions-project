@@ -64,7 +64,7 @@ jobs:
           name: chatgpt-response
           path: chatgpt_response.txt
 
-       - name: Download diff artifact
+      - name: Download diff artifact
         uses: actions/download-artifact@v2
         with:
           name: chatgpt-response
