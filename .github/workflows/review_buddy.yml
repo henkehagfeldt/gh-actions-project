@@ -33,7 +33,7 @@ jobs:
 
       - name: Send message to ChatGPT
         run: |
-          CHANGES=$(cat diff-artifact/diff_output.txt)
+          CHANGES=$(cat diff_output.txt)
           
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
