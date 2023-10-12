@@ -19,15 +19,12 @@ jobs:
       - name: Get changes
         id: getchanges
         run: |
-          # Get the changes made in the PR
-          CHANGES=$(git diff origin/${{ github.base_ref }} ${{ github.sha }})
-          # Set the changes as an output variable
+          git diff origin/${{ github.base_ref }} ${{ github.sha }} > diff_output.txt
+          CHANGES=$(cat diff_output.txt)
           echo "::set-output name=changes::$CHANGES"
 
       - name: Send message to ChatGPT
         run: |
-          CHANGES= echo "${{ steps.getchanges.outputs.changes }}"
-          
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
             --arg model "gpt-3.5-turbo-16k" \
