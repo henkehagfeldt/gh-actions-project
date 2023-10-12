@@ -55,7 +55,7 @@ jobs:
           -d "$JSON_PAYLOAD")
         
           # Extract relevant part from RESPONSE and set as an output (adjust extraction logic as needed)
-          RESULT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+          RESULT="$RESPONSE"
           echo "::set-output name=result::$RESULT"
           
       - name: Post Comment to PR
