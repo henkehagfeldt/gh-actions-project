@@ -37,8 +37,8 @@ jobs:
         with:
           name: diff-artifact
 
-      - name: Send message to ChatGPT
-        id: chatgpt
+      - name: Send a message to ChatGPT
+        id: chatgptstep
         run: |
           CHANGES=$(cat diff_output.txt)
           
@@ -67,7 +67,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "${{ steps.chatgpt.outputs.result }}"
+              body: "${{ steps.chatgptstep.outputs.result }}"
             })
       
 
