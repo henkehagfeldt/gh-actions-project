@@ -51,8 +51,9 @@ jobs:
           # Extract relevant part from RESPONSE and set as an output (adjust extraction logic as needed)
           RESULT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
           echo "::set-output name=result::$RESULT"
-        
-      - uses: actions/github-script@v3
+          
+      - name: Post Comment to PR
+        uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GH_PAT }}
           script: |
@@ -62,3 +63,5 @@ jobs:
               repo: context.repo.repo,
               body: "${{ steps.chatgpt.outputs.result }}"
             })
+      
+
