@@ -17,15 +17,23 @@ jobs:
         run: git fetch origin ${{ github.base_ref }}
   
       - name: Get changes
-        id: getchanges
         run: |
           git diff origin/${{ github.base_ref }} ${{ github.sha }} > diff_output.txt
-          CHANGES=$(cat diff_output.txt)
-          echo "::set-output name=changes::$CHANGES"
+
+      - name: Upload changes as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: diff-artifact
+          path: diff_output.txt
+
+      - name: Download diff artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: diff-artifact
 
       - name: Send message to ChatGPT
         run: |
-          CHANGES="${{ steps.getchanges.outputs.changes }}"
+          CHANGES=$(cat diff-artifact/diff_output.txt)
           
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
