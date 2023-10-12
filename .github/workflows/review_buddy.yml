@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  comment:
+  get-changes:
     runs-on: ubuntu-latest
     environment:
       name: chatgpt
@@ -25,7 +25,13 @@ jobs:
         with:
           name: diff-artifact
           path: diff_output.txt
-
+          
+  post-comment:
+    needs: get-changes
+    runs-on: ubuntu-latest
+    environment:
+      name: chatgpt
+    steps:
       - name: Download diff artifact
         uses: actions/download-artifact@v2
         with:
