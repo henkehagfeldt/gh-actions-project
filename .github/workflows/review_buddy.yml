@@ -32,6 +32,7 @@ jobs:
           name: diff-artifact
 
       - name: Send message to ChatGPT
+        id: chatgpt
         run: |
           CHANGES=$(cat diff_output.txt)
           
