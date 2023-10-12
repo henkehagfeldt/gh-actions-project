@@ -10,6 +10,12 @@ jobs:
     environment:
       name: chatgpt
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Fetch target branch
+        run: git fetch origin ${{ github.base_ref }}
+  
       - name: Get changes
         id: getchanges
         run: |
