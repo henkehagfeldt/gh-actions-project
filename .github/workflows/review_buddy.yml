@@ -38,7 +38,7 @@ jobs:
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
             --arg model "gpt-3.5-turbo-16k" \
-            --arg content "Please help me debug this Python code: $CHANGES" \
+            --arg content "Please help me debug this Python code and format your response as a pull request comment on the changes: $CHANGES" \
             '{model: $model, messages: [{role: "user", content: $content}]}')
               echo "$JSON_PAYLOAD"
           
@@ -47,7 +47,9 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
           -d "$JSON_PAYLOAD")
         
-          echo "Response: $RESPONSE"
+          # Extract relevant part from RESPONSE and set as an output (adjust extraction logic as needed)
+          RESULT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+          echo "::set-output name=result::$RESULT"
         
       - uses: actions/github-script@v3
         with:
@@ -57,5 +59,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "👋 Thanks for reporting! ${{ steps.getchanges.outputs.changes }}"
+              body: "${{ steps.chatgpt.outputs.result }}"
             })
