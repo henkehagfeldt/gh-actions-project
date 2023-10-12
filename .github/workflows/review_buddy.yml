@@ -11,12 +11,12 @@ jobs:
       name: chatgpt
     steps:
       - name: Get changes
-          id: getchanges
-          run: |
-            # Get the changes made in the PR
-            CHANGES=$(git diff origin/${{ github.base_ref }} ${{ github.sha }})
-            # Set the changes as an output variable
-            echo "::set-output name=changes::$CHANGES"
+        id: getchanges
+        run: |
+          # Get the changes made in the PR
+          CHANGES=$(git diff origin/${{ github.base_ref }} ${{ github.sha }})
+          # Set the changes as an output variable
+          echo "::set-output name=changes::$CHANGES"
             
       - uses: actions/github-script@v3
         with:
