@@ -26,8 +26,7 @@ jobs:
 
       - name: Send message to ChatGPT
         run: |
-          CHANGES="${{ steps.getchanges.outputs.changes }}"
-          echo "$CHANGES"
+          CHANGES= echo "${{ steps.getchanges.outputs.changes }}"
           
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
