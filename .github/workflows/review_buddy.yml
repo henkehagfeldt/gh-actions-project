@@ -23,7 +23,23 @@ jobs:
           CHANGES=$(git diff origin/${{ github.base_ref }} ${{ github.sha }})
           # Set the changes as an output variable
           echo "::set-output name=changes::$CHANGES"
-            
+
+      - name: Send message to ChatGPT
+        run: |
+          # Construct the JSON payload using a heredoc and jq
+          JSON_PAYLOAD=$(jq -n \
+            --arg model "gpt-3.5-turbo-16k" \
+            --arg content "Please help me debug this Python code: ${{ steps.getchanges.outputs.changes }}" \
+            '{model: $model, messages: [{role: "user", content: $content}]}')
+              echo "$JSON_PAYLOAD"
+          
+          RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
+          -d "$JSON_PAYLOAD")
+        
+          echo "Response: $RESPONSE"
+        
       - uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GH_PAT }}
