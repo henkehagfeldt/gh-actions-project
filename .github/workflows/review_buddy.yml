@@ -47,28 +47,40 @@ jobs:
             --arg model "gpt-3.5-turbo-16k" \
             --arg content "Please help me debug this Python code and format your response as a pull request comment on the changes: $CHANGES" \
             '{model: $model, messages: [{role: "user", content: $content}]}')
-              echo "$JSON_PAYLOAD"
           
-          RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
+          echo "$JSON_PAYLOAD"
+          
+          curl -s -X POST "https://api.openai.com/v1/chat/completions" \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ secrets.CHATGPT_API_KEY }}" \
-          -d "$JSON_PAYLOAD")
-        
-          # Extract relevant part from RESPONSE and set as an output (adjust extraction logic as needed)
-          RESULT="$RESPONSE"
-          echo "::set-output name=result::$RESULT"
+          -d "$JSON_PAYLOAD"  > chatgpt_response.txt
+
+          echo "show data"
+          echo cat chatgpt_response.txt
+      
+      - name: Upload changes as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: chatgpt-response
+          path: chatgpt_response.txt
+
+       - name: Download diff artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: chatgpt-response
           
       - name: Post Comment to PR
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GH_PAT }}
           script: |
+            CHATGPT_REPONSE=$(cat chatgpt_response.txt)
             const result = "${{ steps.chatgptstep.outputs.result }}";
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: result
+              body: $CHATGPT_REPONSE
             })
       
 
