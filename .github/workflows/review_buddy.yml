@@ -26,10 +26,13 @@ jobs:
 
       - name: Send message to ChatGPT
         run: |
+          CHANGES="${{ steps.getchanges.outputs.changes }}"
+          echo "$CHANGES"
+          
           # Construct the JSON payload using a heredoc and jq
           JSON_PAYLOAD=$(jq -n \
             --arg model "gpt-3.5-turbo-16k" \
-            --arg content "Please help me debug this Python code: ${{ steps.getchanges.outputs.changes }}" \
+            --arg content "Please help me debug this Python code: $CHANGES" \
             '{model: $model, messages: [{role: "user", content: $content}]}')
               echo "$JSON_PAYLOAD"
           
