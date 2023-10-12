@@ -1,6 +1,6 @@
 x = 3
-
-while True:
+y = 5
+while y < 6:
   x = 2
 
 print(X)
