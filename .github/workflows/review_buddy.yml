@@ -78,8 +78,8 @@ jobs:
             const chatGptResponse = fs.readFileSync('chatgpt_response.txt');
             github.issues.createComment({
               issue_number: 42,
-              owner: henkehagfeldt,
-              repo: gh-actions-project,
+              owner: "henkehagfeldt",
+              repo: "gh-actions-project",
               body: chatGptResponse})
       
 
