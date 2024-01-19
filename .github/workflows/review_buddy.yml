@@ -76,10 +76,9 @@ jobs:
           script: |
             CHATGPT_RESPONSE=$(cat chatgpt_response.txt)
             github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "body"
-            })
+              issue_number: 42,
+              owner: henkehagfeldt,
+              repo: henkehagfeldt/gh-actions-project,
+              body: "body"})
       
 
