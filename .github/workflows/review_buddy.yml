@@ -74,11 +74,12 @@ jobs:
         with:
           github-token: ${{ secrets.GH_PAT }}
           script: |
-            CHATGPT_RESPONSE=$(cat chatgpt_response.txt)
+            const fs = require('fs');
+            const chatGptResponse = fs.readFileSync('chatgpt_response.txt');
             github.issues.createComment({
               issue_number: 42,
               owner: henkehagfeldt,
-              repo: henkehagfeldt/gh-actions-project,
-              body: "body"})
+              repo: gh-actions-project,
+              body: chatGptResponse})
       
 
