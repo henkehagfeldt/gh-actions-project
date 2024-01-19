@@ -76,10 +76,12 @@ jobs:
           script: |
             const fs = require('fs');
             const chatGptResponse = fs.readFileSync('chatgpt_response.txt', 'utf8');
+            const jsonResponse = JSON.parse(chatGptResponse);
+
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: chatGptResponse})
+              body: jsonResponse.choices[0].message.content})
       
 
